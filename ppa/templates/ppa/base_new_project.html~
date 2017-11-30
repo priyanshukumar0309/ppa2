@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}New Project{% endblock %}
+
+{% block content_header %}New Project{% endblock %}
+
+{% block navbar_top %}
+
+    <li class="active"><a href="/ppa/professor/">My Projects</a></li>
+    <li><a href="/ppa/my_info/">My Info</a></li>
+    
+{% endblock %}
+
+{% block content %}
+
+    <script>
+    
+    document.body.onload = addElement;
+    var num = 1;
+    
+    Element.prototype.remove = function() {
+    this.parentElement.removeChild(this);
+    }
+    NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+        for(var i = this.length - 1; i >= 0; i--) {
+            if(this[i] && this[i].parentElement) {
+                this[i].parentElement.removeChild(this[i]);
+            }
+        }
+    }
+
+    function addElement () { 
+      // create a new div element 
+      // and give it some content 
+      var newDiv = document.createElement("div"); 
+      newDiv.id = "div"+parseInt(num);
+      var q_label_head = document.createElement("h3");
+      var q_label = document.createTextNode("Question "+parseInt(num));
+      q_label_head.appendChild(q_label);
+      var rm_btn = document.createElement('button');
+      rm_btn.innerHTML = "Remove Question";
+      rm_btn.addEventListener('click', function(){ document.getElementById(newDiv.id).remove(); });
+      var input = document.createElement("input"); 
+      input.type = "text";
+      input.name = parseInt(num);
+      num++;
+      newDiv.appendChild(q_label_head);
+      newDiv.appendChild(input); //add the text node to the newly created div. 
+      newDiv.appendChild(rm_btn);
+
+      // add the newly created element and its content into the DOM 
+      document.getElementById('div1').appendChild(newDiv)
+    }
+
+    
+    </script>
+
+    <form method="post" action="{% url 'save_new_project' %}">
+
+    <table class="table table-striped table-bordered table-hover table-condensed">
+        {% csrf_token %}
+        <tr><th>Name of Project</th><td><input type="text" name="name" required></input></td></tr>
+        <tr><th>Description of Project</th><td><textarea name="description" required></textarea></td></tr>
+        <tr><th>Last Date of Application</th><td><input type="text" id="datepicker" name="application_deadline"  required></input></td></tr>
+    </table>
+    
+    <button type='button' value="Add Question">Add Question</button>
+    
+    <div id='q1'>
+    
+    <h3>Question 1</h3>
+    <input type="text" name="q1" >
+    
+    </div>
+    
+    <div id='q2'>
+    
+    <h3>Question 2</h3>
+    <input type="text" name="q2" >
+    
+    </div>
+    
+    <div id='q3'>
+    
+    <h3>Question 3</h3>
+    <input type="text" name="q3" >
+    
+    </div>
+    
+    <br>
+    
+    <input type='submit' name='submit-btn' value='Save New Project' />  
+      
+    </form>    
+    
+    
+      
+{% endblock %}

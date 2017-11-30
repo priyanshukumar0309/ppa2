@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Professor Home{% endblock %}
+
+{% block content_header %}List of My Projects{% endblock %}
+
+{% block navbar_top %}
+
+    <li class="active"><a href="/ppa/professor/">My Projects</a></li>
+    <li><a href="/ppa/my_info/">My Info</a></li>
+    
+{% endblock %}
+
+{% block content %}
+
+    <a href="{% url 'new_project' %}"><h3>Add a new project</h3></a><br>
+
+    <table class="table table-striped table-bordered table-hover table-condensed">
+    <thead>
+      <tr>
+        <th>Project Title</th>
+        <th>Description</th>
+        <th>Last Date Of Application</th>
+        <th>View Applications</th>
+        <th>Change Project Details</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+        
+        {% for proj in my_projects %}
+        
+            <tr>
+                <td>{{ proj.name }}</td>
+                <td>{{ proj.description }}</td>
+                <td>{{ proj.application_deadline }}</td>
+                <td><a href="{% url 'project_applications' proj.id %}">View Applications</a></td>
+                <td><a href="{% url 'change_details' proj.id %}">View and Change Details</a></td>
+            </tr>
+        
+        {% endfor %}
+        
+    </tbody>
+    </table>
+    
+    
+      
+{% endblock %}

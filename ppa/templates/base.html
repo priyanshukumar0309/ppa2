@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+
+<!-- saved from url=(0054)http://getbootstrap.com/examples/sticky-footer-navbar/ -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" type="image/png" href="{%  static 'favicon.ico' %}"/>
+
+    <title>{% block title %}Student Home{% endblock %}</title>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
+
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	<link href="http://getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+	<link href="http://getbootstrap.com/examples/sticky-footer-navbar/sticky-footer-navbar.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]>
+    <script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+	<script src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    
+    <script type="text/javascript" >
+        $(function(){
+            $("#datepicker").datepicker();
+        });
+        $(function(){
+            $("#datepicker2").datepicker();
+        });
+        $(document).ready(function(){
+            $('.table').DataTable();
+        });
+    </script>
+
+    <link rel="shortcut icon" type="image/png" href="{%  static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    
+    
+  </head>
+
+  <body style="margin-bottom:100px" background="https://gymkhana.iitb.ac.in/~ugacademics/back.jpg">
+
+    <!-- Fixed navbar -->
+   <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+
+        <!-- Header -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+             <a class="navbar-brand" href="#">Portal for Project Allocation</a>
+        </div>
+        <div class="collapse navbar-collapse" id="topNavBar" >
+
+          <ul class="nav navbar-nav">
+            {% block navbar_top %}
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            {% endblock %}
+          </ul>
+
+          <ul class="nav navbar-nav pull-right">
+            {% block navbar_right %}
+              {% endblock %}
+              <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-off" aria-hidden="true"> </span> Logout</a></li>
+
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <!-- Begin page content -->
+    <div class="container">
+      <div class="page-header">
+      <div class="panel panel-default">
+                <div class="panel-body">
+        <h1>{% block content_header %}List of Projects{% endblock %}</h1>
+                </div>
+      </div>
+      </div>
+      <div class="panel panel-default">
+                <div class="panel-body">
+      {% block content %}
+      
+      {% endblock %}
+                </div>
+      </div>
+
+    </div>
+
+    <footer class="footer" >
+        <nav class="navbar navbar-inverse navbar-fixed-bottom" >
+          <div class="container" >
+        <div style="display:inline-block"><p class="text-muted text-left">For any problems, <a href="{% url 'email_page' %}">click here</a></p></div>
+        <div style="display:inline-block;float:right"><p class="text-muted text-right"><a href="{% url 'about_page' %}">About</a></p></div>
+      </div>
+        </nav>
+    </footer>
+
+
+
+
+
+</body></html>

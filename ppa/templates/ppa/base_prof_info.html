@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Professor Information{% endblock %}
+
+{% block content_header %}My Information{% endblock %}
+
+{% block navbar_top %}
+
+    <li><a href="/ppa/professor/">My Projects</a></li>
+
+
+{% endblock %}
+
+{% block navbar_right %}
+    <li class="active"><a href="/ppa/professor/my_info/">My Profile</a></li>
+
+{% endblock %}
+
+{% block content %}
+
+    {% if updated %}
+
+    <p>The information has been updated!</p>
+
+    {% else %}
+
+      <p style="color:green">If you are logging in for the first time, make sure to change the fields below and click on save</p>
+
+    {% endif %}
+<div class="col-sm-24">
+    <form method="post" action="{% url 'save_prof_info' %}"  enctype="multipart/form-data">
+<div class="col-sm-3">
+        <img  src="/ppa{% if prof.profile_dp.url is not None %}{{prof.profile_dp.url }}{% endif %}" width="250px" height="200px" >
+</div>
+        <div class="col-sm-9">
+    <table class="table table-striped   table-condensed">
+        {% csrf_token %}
+
+        <tr><th>Name</th><td><input type="text" name="name" value="{{ prof.name }}"  required></td></tr>
+        <tr><th>Department</th><td><input type="text" name="department" value="{{ prof.department }}"  required></input></td>
+        <tr><th>Email</th><td><input type="email" name="email" value="{{ prof.email }}" required></input></td></tr>
+        <tr class="form-field"><th>Upload/Change Picture</th><td><input type="file" name="profile_dp" id="profile_dp" ></input></td></tr>
+
+
+    </table>
+    </div>
+    <input type='submit' name='submit-btn' value='Save Details' class="btn btn-success btn-l pull-right"/>
+    </form>
+</div>
+
+
+{% endblock %}

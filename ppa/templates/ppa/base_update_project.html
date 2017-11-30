@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Project{% endblock %}
+
+{% block content_header %}Update Project{% endblock %}
+
+{% block navbar_top %}
+
+    <li class="active"><a href="/ppa/professor/">My Projects</a></li>
+
+{% endblock %}
+{% block navbar_right %}
+    <li><a href="/ppa/my_info/">My Profile</a></li>
+
+{% endblock %}
+{% block content %}
+
+    {% if updated %}
+    
+        <h4 style="color:red">The project details were updated!</h4>
+    
+    {% endif %}
+
+    <script>
+    
+    document.body.onload = addElement;
+    var num = 1;
+    
+    Element.prototype.remove = function() {
+    this.parentElement.removeChild(this);
+    }
+    NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+        for(var i = this.length - 1; i >= 0; i--) {
+            if(this[i] && this[i].parentElement) {
+                this[i].parentElement.removeChild(this[i]);
+            }
+        }
+    }
+
+    function addElement () { 
+      // create a new div element 
+      // and give it some content 
+      var newDiv = document.createElement("div"); 
+      newDiv.id = "div"+parseInt(num);
+      var q_label_head = document.createElement("h3");
+      var q_label = document.createTextNode("Question "+parseInt(num));
+      q_label_head.appendChild(q_label);
+      var rm_btn = document.createElement('button');
+      rm_btn.innerHTML = "Remove Question";
+      rm_btn.addEventListener('click', function(){ document.getElementById(newDiv.id).remove(); });
+      var input = document.createElement("input"); 
+      input.type = "text";
+      input.name = parseInt(num);
+      num++;
+      newDiv.appendChild(q_label_head);
+      newDiv.appendChild(input); //add the text node to the newly created div. 
+      newDiv.appendChild(rm_btn);
+
+      // add the newly created element and its content into the DOM 
+      document.getElementById('div1').appendChild(newDiv)
+    }
+
+    
+    </script>
+
+    <form method="post" action="{% url 'update_project_details' proj.id %}">
+
+    <table class="table table-striped table-bordered table-hover table-condensed">
+        {% csrf_token %}
+        <tr><th>Name of Project</th><td><input type="text" name="name" value="{{ proj.name }}" required></input></td></tr>
+
+        <tr><th>Description of Project</th><td><textarea name="description" value="{{ proj.description }}" required>{{ proj.description }}</textarea></td></tr>
+
+        <tr><th>Requirements</th><td><textarea name="requirements" value="{{ proj.requirements }}" required>{{ proj.requirements }}</textarea></td></tr>
+
+        <tr><th>Additional Comments</th><td><textarea name="additional_comments" value="{{ proj.additional_comments }}" required>{{ proj.additional_comments }}</textarea></td></tr>
+
+        <tr><th>Last Date of Application</th><td><input type="date" id="datepicker" value="{{ proj.application_deadline|date:'Y-m-d' }}" name="application_deadline"  ></input></td></tr>
+
+        <tr><th>Number of open positions</th><td><input type="number" name="num_positions" value="{{ proj.num_positions }}" required></input></td></tr>
+        
+        <tr><th>Expected starting date</th><td><input type="date" id="datepicker2" value="{{ proj.expected_start_date|date:'Y-m-d' }}" name="expected_start_date"  ></input></td></tr>
+        
+        <tr><th>Duration of project (months)</th><td><input type="number" name="duration" value="{{ proj.duration }}" required></input></td></tr>
+        <tr><th>SOP Question</th><td><input type="text" name="sop" value="{{ proj.sop_question }}" required></input></td></tr>
+    </table>
+    
+    <br>
+    
+    <input type='submit' name='submit-btn'class="btn btn-warning btn-l" value='Update Project Details' />
+
+      
+    </form>
+
+    <a href="{% url 'remove_project' proj.id %} " onclick="return confirm('ALL THE APPLICATIONS OF THIS PROJECT WILL BE LOST!!!.                         Are you sure you want to Remove this project?')"style="position:relative; left: 980px; width: 100px; text-align:right;"><button type="button" class="btn btn-danger btn-l">Remove Project</button></a>
+{% endblock %}

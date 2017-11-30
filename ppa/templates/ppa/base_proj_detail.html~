@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Project Details{% endblock %}
+
+{% block content_header %}Project Details{% endblock %}
+
+{% block navbar_top %}
+
+    <li><a href="/ppa/student/">All Projects</a></li>
+    <li><a href="/ppa/my_applications/">My Applications</a></li>
+    <li><a href="/ppa/my_info/">My Info</a></li>
+    
+{% endblock %}
+
+{% block content %}
+
+    <table class="table table-striped table-bordered table-hover table-condensed">
+        
+        <tr><th>Project Title</th><td>{{ project.name }}</td></tr>
+        <tr><th>Professor's Name</th><td>{{ project.prof.name }}</td></tr>
+        <tr><th>Professor's Email</th><td>{{ project.prof.email }}</td></tr>
+        <tr><th>Department</th><td>{{ project.prof.department }}</td></tr>
+        <tr><th>Description</th><td>{{ project.description }}</td></tr>
+        <tr><th>Last Date Of Application</th><td>{{ project.application_deadline }}</td></tr>
+        
+        {% if applied %}
+        
+            <tr><th>Application Status</th><td>{{ app.status }}</td></tr>
+            <tr><th>Message from Prof</th><td>{{ app.message_from_prof }}</td></tr>
+            <tr><th>Message to Prof</th><td><form action="{% url 'send_to_prof' app.id %}" method="post"><div style="float:left">{% csrf_token %} <textarea name="msg">{{ app.message_to_prof }}</textarea></div><div style='padding:10px;float:left'><input type='submit' name='msg_send' value='Send' ></div></form></td></tr>
+        
+        {% endif %}
+
+    </table>
+    
+    {% if applied %}
+    
+        {% if not project.deadline_passed %}
+        
+            <a href="{% url 'remove_application' app.id %}" onclick="return confirm('Are you sure you want to remove the application for this project? Read the terms and conditions carefully first.')">To remove your application, click here</a>
+        
+        {% endif %}
+    
+        {% if selected %}
+        
+            {% if student_waiting %}
+        
+                <a href="{% url 'accept_project' app.id %}" onclick="return confirm('Are you sure you want to accept this project? Read the terms and conditions carefully first.')"> Congratulations! Your application has been selected. Click here to accept your project.</a><br>
+            
+                <a href="{% url 'reject_project' app.id %}" onclick="return confirm('Are you sure you want to reject this project? Read the terms and conditions carefully first.')"> If you want to reject your project, click here.</a>
+                
+            {% elif student_accepted %}
+            
+                <p>You have already accepted this project</p>
+                
+            {% elif student_rejected %}
+            
+                <p>You have already rejected this project</p>
+                
+            {% else %}
+            
+                <p>There was some problem rendering this page. Please contact the academic council to resolve this issue1</p>
+                
+            {% endif %}
+        
+        {% elif under_review %}
+        
+            <p>Your application is under review. Please make sure you are in contact with the professor.</p>
+            
+        {% elif waitlisted %}
+        
+            <p>Your application is waitlisted.</p>
+            
+        {% elif rejected %}
+        
+            <p>Sorry your application was rejected.</p>
+            
+        {% else %}
+        
+            <p>There was some problem rendering this page. Please contact the academic council to resolve this issue2</p>
+            
+        {% endif %}
+        
+    {% else %}
+    
+        {% if not project.deadline_passed %}
+            
+            {% if num_projects %}
+                
+                <p>Sorry you cant apply for more than 5 projects </p>
+                
+            {% else %}
+            
+                <a href="{% url 'apply_for_project' project.id %}" onclick="return confirm('Are you sure you want to apply for this project? Read the terms and conditions carefully first.')"> Apply Now!</a>
+                
+            {% endif %}
+            
+        {% else %}
+        
+            <p>Sorry the deadline for applying has passed </p>
+            
+        {% endif %}
+        
+    {% endif %}
+                
+{% endblock %}

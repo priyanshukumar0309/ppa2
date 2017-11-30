@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Information{% endblock %}
+
+{% block content_header %}My Information{% endblock %}
+
+{% block navbar_top %}
+
+    <li><a href="/ppa/test/">All Projects</a></li>
+    <li><a href="/ppa/my_applications/">My Applications</a></li>
+    <li class="active"><a href="/ppa/my_info/">My Info</a></li>
+    
+{% endblock %}
+
+{% block content %}
+
+    {% if updated %}
+    
+    <p>The information has been updated!</p>
+    
+    {% endif %}
+    
+    <form method="post" action="{% url 'save_my_info' %}">
+    
+
+    <table class="table table-striped table-bordered table-hover table-condensed">
+        {% csrf_token %}
+        <tr><th>Name</th><td>{{ student.name }}</td></tr>
+        <tr><th>Department</th><td>{{ student.department }}</td></tr>
+        <tr><th>Email</th><td><input type="email" name="email" value="{{ student.email }}" required></input></td></tr>
+        <tr><th>Year of Study</th><td><input type="number" name="yos" maxlength="2" value="{{ student.yos }}" required></input></td></tr>
+        <tr><th>CPI</th><td><input type="number" name="cpi" maxlength="5" value="{{ student.cpi }}" required></input></td></tr>
+        <tr><th>Contact Number</th><td><input type="text" name="ph_no" value="{{ student.ph_no }}" maxlength="10" required></input></td></tr>
+        
+
+    </table>
+    
+    <input type='submit' name='submit-btn' value='Save Details' />    
+    </form>
+    
+    
+      
+{% endblock %}

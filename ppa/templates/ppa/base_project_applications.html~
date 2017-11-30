@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block title %}Project Applications{% endblock %}
+
+{% block content_header %}List of Applicants{% endblock %}
+
+{% block navbar_top %}
+
+    <li class="active"><a href="/ppa/professor/">My Projects</a></li>
+    <li><a href="/ppa/professor/my_info/">My Info</a></li>
+    
+{% endblock %}
+
+{% block content %}
+
+    {% if updated %}
+    
+        <h4 style="color:red">The table was updated!</h4>
+    
+    {% endif %}
+
+    <form action="{% url 'update_table' proj.id %}" method="post">
+    
+    {% csrf_token %}
+
+    <div style="padding:10px">
+    <input type="submit" name="update_btn" value="Update Table" style="float:right" ><br>
+    </div>
+    
+    <div style="padding:10px">
+    <input type="submit" name="reject_btn" value="Reject all except Selected and Waitlisted" style="float:right"><br>
+    </div>
+
+    <br>
+    
+    <table class="table table-striped table-bordered table-hover table-condensed">
+    <thead>
+      <tr>
+        <th>Applicant name</th>
+        <th>Department</th>
+        <th>Year of study</th>
+        <th>CPI</th>
+        <th>Email</th>
+        <th>Contact Number</th>
+        <th>View Answers</th>
+        <th>Message from Student</th>
+        <th>Set Status of Student</th>
+        <th>Set Waitlist Number</th>
+        <th>Student Response on Status</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+        
+        {% for appl in appls %}
+        
+            <tr>
+                <td>{{ appl.student.name }}</td>
+                <td>{{ appl.student.department }}</td>
+                <td>{{ appl.student.yos }}</td>
+                <td>{{ appl.student.cpi }}</td>
+                <td>{{ appl.student.email }}</td>
+                <td>{{ appl.student.ph_no }}</td>
+                <td><a href="{% url 'view_answers' appl.id %}" >View Answers to Questions I asked</a></td>
+                <td>
+                    <select name="status_{{ appl.id }}" onchange="setWaitlist({{ appl.id }}, this)">
+                        {% if appl.status == "Interview Pending" %}
+                            <option value="Interview Pending" selected >Interview Pending</option>
+                        {% else %}
+                            <option value="Interview Pending" >Interview Pending</option>
+                        {% endif %}
+                        {% if appl.status == "Waitlisted" %}
+                            <option value="Waitlisted" selected>Waitlisted</option>
+                        {% else %} 
+                            <option value="Waitlisted" >Waitlisted</option>
+                        {% endif %}
+                        {% if appl.status == "Selected" %}
+                            <option value="Selected" selected>Selected</option>
+                        {% else %}    
+                            <option value="Selected">Selected</option>
+                        {% endif %}
+                        {% if appl.status == "Rejected" %}    
+                            <option value="Rejected" selected>Rejected</option>
+                        {% else %}    
+                            <option value="Rejected">Rejected</option>
+                        {% endif %}
+                    </select>
+                </td>
+                <td>
+                {{ appl.message_to_prof }}
+                </td>
+                <td>
+                {% if appl.status == "Waitlisted" %}
+                    <input type="number" name="waitlist_{{ appl.id }}" id="waitlist_{{ appl.id }}" value="{{ appl.waitlist_no }}">
+                {% else %}    
+                    <input type="hidden" name="waitlist_{{ appl.id }}" id="waitlist_{{ appl.id }}" >
+                {% endif %}
+                </td>
+                
+                <td>{{ appl.accept_status }}</td>
+                
+                
+            </tr>
+        
+        {% endfor %}
+        
+        <script>
+        
+            function setWaitlist(id, sel) 
+            {
+                if(sel.value == "Waitlisted")
+                {
+                    document.getElementById("waitlist_"+id).type="number";
+                    document.getElementById("waitlist_"+id).required=true;
+                }
+                else
+                {
+                    document.getElementById("waitlist_"+id).value=0;
+                    document.getElementById("waitlist_"+id).type="hidden";
+                }
+            }
+            
+            
+            $("input[name='update_btn']").click(
+                function()
+                {
+                    var array_of_nums = [];
+                    array_of_nums[0] = 0;
+                    
+                    $('input[type="number"]').each(function(){
+                        
+                        console.log(Number($(this).val()));
+                        
+                        var bla = Number($(this).val());
+                        array_of_nums.push(bla);
+                    });
+                    
+                    array_of_nums.sort();   
+                    
+                    console.log(array_of_nums.length);
+                    
+                    for(var i = 0; i < array_of_nums.length ; i++)
+                    {
+                        if(array_of_nums[i] != i)
+                        {
+                            alert("Waitlist number '"+parseInt(array_of_nums[i])+"' is not valid. Please try again");
+                            return false;
+                        }
+                    }
+                    
+                    return true;
+                }
+            );
+            
+        
+        </script>
+        
+    </tbody>
+    </table>
+    
+    </form>
+      
+{% endblock %}

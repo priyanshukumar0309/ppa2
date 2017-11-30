@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<!-- saved from url=(0054)http://getbootstrap.com/examples/sticky-footer-navbar/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Login Page</title>
+    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
+  
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+
+    <!-- Bootstrap core CSS -->
+	<link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	<link href="http://getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+	<link href="http://getbootstrap.com/examples/sticky-footer-navbar/sticky-footer-navbar.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+	<script src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    
+    <script type="text/javascript" >
+        $(function(){
+            $("#datepicker").datepicker();
+        });
+        $(function(){
+            $("#datepicker2").datepicker();
+        });
+        $(document).ready(function(){
+            $('.table').DataTable();
+        });
+    </script>
+
+
+    
+    
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    
+
+  <script type="text/javascript">
+    var url = window.location.href;
+    url = url.replace("#", "?");
+    window.location.href = url;
+  </script>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	<script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+  <script src="https://gymkhana.iitb.ac.in/sso/static/widget/js/login.min.js" type="application/javascript"></script> 
+
+   <script type="application/javascript">
+
+        new SSO_JS({
+            config: {
+                client_id: 'O17EPBeU9l5NfOWUxq1IMc9fIKZrt4WUC4GE3xYL',   // Compulsory
+                scope: ['basic', 'profile', 'ldap', 'program', 'phone'],    // Optional. Default is  ['basic']
+                state: '', // Optional. Default None
+                response_type: 'token',  // Optional. Default is 'code'
+                redirect_uri: '',    //Optional
+                new_window: 'false',    // Optional.
+                                        // Where authorization page should be opened in new tab or
+                                        // same tab Default is false.
+                sso_root: document.getElementById('sso-root'),
+                /* Optional
+                 document.getElementById don't work if your element is not in light DOM. In that case you need to
+                 provide selector here. In most of the cases this will work.
+                 */
+            },
+            colors: { // All Optional
+                button_div_bg_color: '303F9F', // Background color of button
+                button_anchor_color: 'FFFFFF', // Font color of Button
+                logout_anchor_color: '727272', // Font color of logout mark (The one with 'Login as other user'
+            },
+        }).init();
+
+    </script>
+  
+
+</body></html>

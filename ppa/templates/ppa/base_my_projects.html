@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Professor Home{% endblock %}
+
+{% block content_header %}List of My Projects{% endblock %}
+
+{% block navbar_top %}
+
+    <li class="active"><a href="/ppa/professor/">My Projects</a></li>
+
+    
+{% endblock %}
+
+{% block navbar_right %}
+    <li><a href="/ppa/professor/my_info/">My Profile</a></li>
+
+{% endblock %}
+{% block content %}
+
+<a href="{% url 'new_project' %}"><button class="btn btn-primary btn-l"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a new project</button></a><br><br>
+
+    <table class="table table-striped table-bordered table-hover table-condensed">
+    <thead>
+      <tr>
+        <th>Project Title</th>
+        <th>Description</th>
+        <th>Requirements</th>
+        <th>Additional Comments</th>
+        <th>Duration</th>
+        <th>Last Date Of Application</th>
+        <th>View Applications</th>
+        <th>Change Project Details</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+        
+        {% for proj in my_projects %}
+        
+            <tr>
+                <td>{{ proj.name }}</td>
+                <td>{{ proj.description }}</td>
+                <td>{{ proj.requirements }}</td>
+                <td>{{ proj.additional_comments }}</td>
+                <td>{{ proj.duration }} </td>
+                <td>{{ proj.application_deadline }}</td>
+                <td><a href="{% url 'project_applications' proj.id %}"><button type="button" class="btn btn-success btn-xs">
+                    View<br> Applications</button></a></td>
+                <td><a href="{% url 'change_details' proj.id %}"><button type="button" class="btn btn-danger btn-xs">
+                    View and Change<br> Details</button></a></td>
+            </tr>
+        
+        {% endfor %}
+        
+    </tbody>
+    </table>
+    
+    
+      
+{% endblock %}

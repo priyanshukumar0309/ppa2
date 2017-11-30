@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Send Email{% endblock %}
+
+{% block content_header %}Send Email{% endblock %}
+
+{% block navbar_top %}
+
+    
+    
+{% endblock %}
+
+{% block content %}
+
+    {% if sent %}
+        <h4 style="color:red">Your email has been sent</h4>
+    {% endif %}
+
+    <form method="post" action="{% url 'send_mail_1' %}">
+    {% csrf_token %}
+    
+        <div style="padding:5px">
+        <h5>Email ID</h5>
+        {% if ldap_id is not None %}
+            <input type="email" name="email" value="{{ ldap_id }}@iitb.ac.in" required>
+        {% else %}
+            <input type="email" name="email" required>
+        {% endif %}
+        </div>
+        
+        <div style="padding:5px">
+        <h5>Subject</h5>
+        <input type="text" name="subject" required>
+        </div>
+        
+        <div style="padding:5px">
+        <h5>Message</h5>
+        <textarea name="message" required></textarea>
+        </div>
+        
+        <div style="padding:5px">
+        <input type="submit" name="submitbtn" value="Send Email">
+        </div>
+    
+    </form>
+      
+{% endblock %}

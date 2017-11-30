@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}View Answers{% endblock %}
+
+{% block content_header %}Answers by {{ name }}{% endblock %}
+
+{% block navbar_top %}
+
+    <li><a href="/ppa/professor/">My Projects</a></li>
+
+    
+{% endblock %}
+{% block navbar_right %}
+    <li><a href="/ppa/my_info/">My Profile</a></li>
+
+{% endblock %}
+{% block content %}
+
+    {% for ans in answers %}
+    
+        <h3>{{ ans.question }}</h3>
+        <h5>{{ ans.text }}</h5>
+    
+    {% endfor %}
+      
+{% endblock %}

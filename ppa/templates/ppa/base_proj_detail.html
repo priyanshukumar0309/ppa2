@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}Project Details{% endblock %}
+
+{% block content_header %}Project Details{% endblock %}
+
+{% block navbar_top %}
+
+    <li><a href="/ppa/student/">All Projects</a></li>
+    <li><a href="/ppa/my_applications/">My Applications</a></li>
+
+    
+{% endblock %}
+{% block navbar_right %}
+    <li><a href="/ppa/my_info/">My Profile</a></li>
+
+{% endblock %}
+{% block content %}
+
+
+    <table class="table table-bordered table-hover ">
+        
+        <tr><th>Project Title</th><td><strong>{{ project.name }}</strong></td></tr>
+        <tr><th>Professor's Name</th><td>{{ project.prof.name }}</td></tr>
+        <tr><th>Professor's Email</th><td>{{ project.prof.email }}</td></tr>
+        <tr><th>Department</th><td>{{ project.prof.department }}</td></tr>
+        <tr><th>Description</th><td>{{ project.description }}</td></tr>
+        <tr><th>Requirements</th><td>{{ project.requirements }}</td></tr>
+        <tr><th>Additional Comments</th><td>{{ project.additional_comments }}</td></tr>
+        <tr><th>Duration (in months)</th><td>{{ project.duration }}</td></tr>
+        <tr><th>Last Date Of Application</th><td>{{ project.application_deadline }}</td></tr>
+        <tr><th>Number of open positions</th><td>{{ project.num_positions }}</td></tr>
+        {%if project.sop_question != ' ' %}
+            <tr><th>SOP Question</th><td>{{project.sop_question}}</td></tr>
+        {% endif %}
+        {% if applied %}
+            {%if project.sop_question != ' ' %}
+                <tr><th>SOP Answer</th><td><form action="{% url 'update_sop' app.id %}" method="post" col="10"><div style="float:left">{% csrf_token %} <textarea name="sop">{{ app.sop_answer }}</textarea></div><div style='padding:10px;float:left'><input type='submit' name='sop_ans' value='Update SOP' ></div></form></td></tr>
+            {% endif %}
+            <tr><th>Application Status</th><td>{{ app.status }} {% if app.waitlist_no %} {{app.waitlist_no}} {% endif %}</td></tr>
+            <tr><th>Message from Prof</th><td>{{ app.message_from_prof }}</td></tr>
+            <tr><th>Message to Prof</th><td><form action="{% url 'send_to_prof' app.id %}" method="post"><div style="float:left">{% csrf_token %} <textarea name="msg">{{ app.message_to_prof }}</textarea></div><div style='padding:10px;float:left'><input type='submit' name='msg_send' value='Send' ></div></form></td></tr>
+        
+        {% endif %}
+
+    </table>
+
+    {% if applied %}
+    
+        {% if not project.deadline_passed and not student_accepted %}
+        
+            <a href="{% url 'remove_application' app.id %}" onclick="return confirm('Are you sure you want to remove the application for this project? Read the terms and conditions carefully first.')"><button type="button" class="btn btn-danger btn-l">Remove Application</button> </a><br>
+        
+        {% endif %}
+    
+        {% if selected %}
+        
+            {% if student_waiting %}
+                <h3>Congratulations! Your application has been selected.</h3>
+                <a href="{% url 'accept_project' app.id %}" onclick="return confirm('Are you sure you want to accept this project? Read the terms and conditions carefully first.')"><button type="button" class="btn btn-success btn-l">Accept Project</button></a><br>
+                <h4>If you want to reject your project, click here.</h4>
+                <a href="{% url 'reject_project' app.id %}" onclick="return confirm('Are you sure you want to reject this project? Read the terms and conditions carefully first.')"><button type="button" class="btn btn-danger btn-l">Reject Project</button> </a>
+                
+            {% elif student_accepted %}
+            
+                <h4>You have already accepted this project</h4>
+                
+            {% elif student_rejected %}
+            
+                <h4>You have already rejected this project</h4>
+                
+            {% else %}
+            
+                <p>There was some problem rendering this page. Please contact the academic council to resolve this issue1</p>
+                
+            {% endif %}
+        
+        {% elif under_review %}
+        
+            <p>Your application is under review. Please make sure you are in contact with the professor.</p>
+            
+        {% elif waitlisted %}
+        
+            <h4>Your application is waitlisted.</h4>
+             <h4>Click,  If you want to remove your application.</h4>
+
+
+        {% elif rejected %}
+        
+            <h3>Sorry your application was rejected.</h3>
+
+        {% else %}
+        
+            <p>There was some problem rendering this page. Please contact the academic council to resolve this issue2</p>
+            
+        {% endif %}
+        
+    {% else %}
+    
+        {% if not project.deadline_passed %}
+            
+            {% if num_projects %}
+                
+                <p>Sorry you cant apply for more than 5 projects </p>
+                
+            {% else %}
+
+                <a href="{% url 'apply_for_project' project.id %}" onclick="return confirm('Are you sure you want to apply for this project? Read the terms and conditions carefully first.')">
+                    <button type="button" class="btn btn-warning btn-l"> Apply Now!</button></a>
+                
+            {% endif %}
+            
+        {% else %}
+        
+            <h3>Sorry the deadline for applying has passed </h3>
+            
+        {% endif %}
+        
+    {% endif %}
+                
+{% endblock %}
